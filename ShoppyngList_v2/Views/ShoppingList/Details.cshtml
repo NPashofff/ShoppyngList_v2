@@ -1,0 +1,32 @@
+﻿@model ShoppingList.Models.Data.Models.ShopList
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Shopping List Name: @Html.DisplayFor(model => model.Name)</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    <hr />
+    <ul>
+        @foreach (var x in Model.ListProducts)
+        {
+            @*<li>
+                <a asp-controller="ShoppingList" asp-action="SaveList" class="@(x.IsBuy ? "btn btn-outline-success glyphicon glyphicon-ok" : "btn btn-outline-secondaryt")" asp-route-iss="@x.IsBuy" asp-route-productId="@x.Id" asp-route-productCategoryId="@Model.Id">@x.Name @(x.IsBuy ? " ✅  Bought" : "")</a>
+            </li>*@
+
+        }
+    </ul>
+</div>
+<div>
+    <a asp-controller="ShoppingList" asp-action="CreateProduct" class="btn btn-light" asp-route-productCategoryId="@Model?.Id">Create Product</a> |
+    <a asp-action="Index" class="btn btn-light">Back to List</a>
+</div>
