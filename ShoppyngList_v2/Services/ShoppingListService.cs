@@ -33,6 +33,7 @@ namespace ShoppingList.Services
             var shopList = await _context
                 .ShopLists
                 .Include(x => x.ListProducts)
+                .ThenInclude(s => s.Product)
                 .Include(x => x.Categories)
                 .FirstOrDefaultAsync(x => x.Id == id /*&& x.IsDeleted == false*/);
 
@@ -57,9 +58,9 @@ namespace ShoppingList.Services
 
         public async Task BuyProduct(int id)
         {
-            ////var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
-            ////product.IsBuy = true;
-            ////await _context.SaveChangesAsync();
+            var product = await _context.ListProducts.FirstOrDefaultAsync(x => x.Id == id);
+            product.IsBought = true;
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteProductCategory(int id)
@@ -90,6 +91,21 @@ namespace ShoppingList.Services
             var shopList = await _context.ShopLists.FirstOrDefaultAsync(x => x.Id == shopListId);
             var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId);
             shopList.Categories.Add(category);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddProductToShopListAsync(int productId, int shopListId)
+        {
+            var shopList = await _context.ShopLists.FirstOrDefaultAsync(x => x.Id == shopListId);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
+            var listProduct = new ListProduct
+            {
+                ShopListId = shopListId,
+                ShopList = shopList,
+                ProductId = productId,
+                Product = product
+            };
+            shopList.ListProducts.Add(listProduct);
             await _context.SaveChangesAsync();
         }
     }

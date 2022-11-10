@@ -33,5 +33,16 @@ namespace ShoppyngList_v2.Services
         {
             return await _context.Products.FirstAsync(x => x.Id == id);
         }
+        
+        public async Task<ICollection<Product>> GetProductByCategoryAsync(int productId)
+        {
+            return await _context
+                .Products
+                .Include(x =>x.Category)
+                .Where(x => x.CategoryId == productId)
+                .ToArrayAsync();
+        }
+
+
     }
 }

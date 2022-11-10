@@ -5,6 +5,7 @@ using Microsoft.Identity.Web;
 using ShoppingList.Models.Data;
 using ShoppingList.Models.Data.Models;
 using ShoppingList.Services;
+using ShoppyngList_v2.Services;
 
 namespace ShoppingList.Controllers
 {
@@ -13,11 +14,13 @@ namespace ShoppingList.Controllers
     {
         private readonly ShoppingListService _shoppingListService;
         private readonly CategoryServices _categoryServices;
+        private  readonly ProductService _productService;
 
-        public ShoppingList(ShoppingListService shoppingListService, CategoryServices categoryServices)
+        public ShoppingList(ShoppingListService shoppingListService, CategoryServices categoryServices, ProductService productService)
         {
             _shoppingListService = shoppingListService;
             _categoryServices = categoryServices;
+            _productService = productService;
         }
         // GET: ShoppingList
         public async Task<ActionResult> Index()
@@ -50,11 +53,11 @@ namespace ShoppingList.Controllers
         }
 
 
-        public async Task<ActionResult> SaveList(bool iss, string productId, string productCategoryId)
+        public async Task<ActionResult> SaveList(bool isBought, string listProduct, string productCategoryId)
         {
-            if (!iss)
+            if (!isBought)
             {
-                await _shoppingListService.BuyProduct(int.Parse(productId));
+                await _shoppingListService.BuyProduct(int.Parse(listProduct));
             }
             return Redirect("/ShoppingList/Details?id=" + productCategoryId);
         }
@@ -111,6 +114,18 @@ namespace ShoppingList.Controllers
         public async Task<ActionResult> AddCategoryToShpList(int id, int shopListId)
         {
             await _shoppingListService.AddCategoryToShopList(id, shopListId);
+            return Redirect("/ShoppingList/Details?id=" + shopListId);
+        }
+
+        public async Task<ActionResult> AddProduct(int shopListId, int categoryId)
+        {
+            ViewBag.shopListId = shopListId;
+            return View(await _productService.GetProductByCategoryAsync(categoryId));
+        }
+        
+        public async Task<ActionResult> AddProductToShopingList(int id, int shopListId)
+        {
+            await _shoppingListService.AddProductToShopListAsync(id, shopListId);
             return Redirect("/ShoppingList/Details?id=" + shopListId);
         }
     }
