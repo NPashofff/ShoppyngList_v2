@@ -13,26 +13,13 @@ namespace ShoppyngList_v2.Controllers
         {
             _productService = productService;
         }
+        
 
-        // GET: ProductController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: ProductController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ProductController/Create
         public ActionResult Create(int categoryId)
         {
             return View(new Product() { CategoryId = categoryId });
         }
 
-        // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Product product)
@@ -48,7 +35,6 @@ namespace ShoppyngList_v2.Controllers
             }
         }
 
-        // GET: ProductController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
             return View(await _productService.GetProductByIdAsinc(id));
@@ -65,25 +51,9 @@ namespace ShoppyngList_v2.Controllers
 
         }
 
-        // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
-        }
-
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ShoppingList.Controllers
     public class CategoryController : Controller
     {
         private readonly CategoryServices _categoryServices;
-        // GET: CategoryController
+        
         public CategoryController(CategoryServices categoryServices)
         {
             _categoryServices = categoryServices;
@@ -20,21 +20,18 @@ namespace ShoppingList.Controllers
             var categories = await _categoryServices.GetAllCategoriesAsync();
             return View(categories);
         }
-
-        // GET: CategoryController/Details/5
+        
         public async Task<ActionResult> Details(int id)
         {
             var category = await _categoryServices.GetCategoryByIdAsync(id);
             return View(category);
         }
 
-        // GET: CategoryController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: CategoryController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Category category)
@@ -50,14 +47,12 @@ namespace ShoppingList.Controllers
             }
         }
 
-        // GET: CategoryController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
             Category category = await _categoryServices.GetCategoryByIdAsync(id);
             return View(category);
         }
 
-        // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Category category)
@@ -73,25 +68,9 @@ namespace ShoppingList.Controllers
             }
         }
 
-        // GET: CategoryController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
-        }
-
-        // POST: CategoryController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -22,26 +22,23 @@ namespace ShoppingList.Controllers
             _categoryServices = categoryServices;
             _productService = productService;
         }
-        // GET: ShoppingList
+
         public async Task<ActionResult> Index()
         {
             return View(await _shoppingListService.GetAllProductCategoryByUser(User.GetNameIdentifierId()!));
         }
 
-        // GET: ShoppingList/Details/5
         public async Task<ActionResult> Details(int id)
         {
             var shopList = await _shoppingListService.GetProductCategoryByIdAsync(id);
             return View(shopList);
         }
 
-        // GET: ShoppingList/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ShoppingList/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ShopList shopList)
@@ -62,14 +59,12 @@ namespace ShoppingList.Controllers
             return Redirect("/ShoppingList/Details?id=" + productCategoryId);
         }
 
-        // GET: ShoppingList/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
             var shopList = await _shoppingListService.GetProductCategoryByIdAsync(id);
             return View(shopList);
         }
 
-        // POST: ShoppingList/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ShopList shopList)
@@ -85,25 +80,10 @@ namespace ShoppingList.Controllers
             }
         }
 
-        // GET: ShoppingList/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            await _shoppingListService.DeleteProductCategory(id);
+            //todo:
             return Redirect("/ShoppingList/Index");
-        }
-
-        public IActionResult CreateProduct(int productCategoryId)
-        {
-            ViewBag.productCategoryId = productCategoryId;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProduct(Product product, int productCategoryId)
-        {
-            await _shoppingListService.CreateProduct(product, productCategoryId);
-            return Redirect("/ShoppingList/Details?id=" + productCategoryId);
         }
         
         public async Task<ActionResult> AddCategory(int shopListId)
@@ -111,6 +91,7 @@ namespace ShoppingList.Controllers
             ViewBag.shopListId = shopListId;
             return View(await _categoryServices.GetAllCategoriesAsync());
         }
+
         public async Task<ActionResult> AddCategoryToShpList(int id, int shopListId)
         {
             await _shoppingListService.AddCategoryToShopList(id, shopListId);

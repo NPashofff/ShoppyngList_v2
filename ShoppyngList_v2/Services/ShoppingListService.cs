@@ -36,49 +36,17 @@ namespace ShoppingList.Services
                 .ThenInclude(s => s.Product)
                 .Include(x => x.Categories)
                 .FirstOrDefaultAsync(x => x.Id == id /*&& x.IsDeleted == false*/);
-
-            //return new ProductCategoryDto()
-            //{
-            //    Id = productCategory.Id,
-            //    Name = productCategory.Name,
-            //    Description = productCategory.Description,
-            //    CreatorUserName = productCategory.CreatorUserName,
-            //    IsDeleted = productCategory.IsDeleted,
-            //    Products = productCategory.Products
-            //};
+            
             return shopList ?? new ShopList();
         }
-
-        public async Task CreateProduct(Product product, int productCategoryId)
-        {
-            //var productCategory = await _context.ProductCategories.FirstOrDefaultAsync(x => x.Id == productCategoryId);
-            //productCategory.Products.Add(product);
-            //var x = await _context.SaveChangesAsync();
-        }
-
+        
         public async Task BuyProduct(int id)
         {
             var product = await _context.ListProducts.FirstOrDefaultAsync(x => x.Id == id);
             product.IsBought = true;
             await _context.SaveChangesAsync();
         }
-
-        public async Task DeleteProductCategory(int id)
-        {
-            //var productCategory = await _context.ProductCategories.FirstOrDefaultAsync(x => x.Id == id);
-            //productCategory.IsDeleted = true;
-            //await _context.SaveChangesAsync();
-        }
-
-        //public async Task UpdateProductCategoryAsync(ProductCategoryDto productCategoryDto)
-        //{
-        //    //var productCategory =await _context.ProductCategories.FirstOrDefaultAsync(x => x.Id == productCategoryDto.Id);
-        //    //productCategory.Name = productCategoryDto.Name;
-        //    //productCategory.Description = productCategoryDto.Description;
-        //    // _context.ProductCategories.Update(productCategory);
-
-        //    // await _context.SaveChangesAsync();
-        //}
+        
         public async Task UpdateShopListAsync(ShopList shopList)
         {
             var shopListForUpdate = await _context.ShopLists.FirstOrDefaultAsync(x => x.Id == shopList.Id);

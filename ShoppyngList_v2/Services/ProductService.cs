@@ -42,7 +42,5 @@ namespace ShoppyngList_v2.Services
                 .Where(x => x.CategoryId == productId)
                 .ToArrayAsync();
         }
-
-
     }
 }
