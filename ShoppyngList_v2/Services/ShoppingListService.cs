@@ -1,9 +1,10 @@
-﻿using ShoppingList.Models.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShoppingList.Models.Data;
 using ShoppingList.Models.Data.Models;
 
 namespace ShoppingList.Services
 {
-    public class ShoppingListService 
+    public class ShoppingListService
     {
         private readonly ApplicationDbContext _context;
 
@@ -12,48 +13,39 @@ namespace ShoppingList.Services
             _context = context;
         }
 
-        public async Task Create(Category category)
+        public async Task Create(ShopList shpoList)
         {
-           // _context.ProductCategories.Add(category);
+             _context.ShopLists.Add(shpoList);
             await _context.SaveChangesAsync();
         }
 
-        //public async Task<ICollection<ProductCategoryDto>> GetAllProductCategoryByUser(string userName)
-        //{
-        //   // var productCategories = await _context.ProductCategories
-        //      //  .Where(x => x.CreatorUserName == userName && x.IsDeleted == false)
-        //       // .ToListAsync();
+        public async Task<ICollection<ShopList>> GetAllProductCategoryByUser(string userId)
+        {
+            var userShopLists = await _context.ShopLists
+                .Where(x => x.UserId == userId /*&& x.IsDeleted == false*/)
+                .ToListAsync();
 
-        //    //return productCategories.Select(pc => new ProductCategoryDto
-        //    //    {
-        //    //        Id = pc.Id,
-        //    //        Name = pc.Name,
-        //    //        Description = pc.Description,
-        //    //        CreatorUserName = pc.CreatorUserName,
-        //    //        Products = pc.Products
-        //    //    })
-        //    //    .ToList();
-        //    return null;
-        //}
+            return userShopLists;
+        }
 
-        //public async Task<ProductCategoryDto> GetProductCategoryByIdAsync(int id)
-        //{
-        //    //var productCategory = await _context
-        //    //    .ProductCategories
-        //    //    .Include(x => x.Products)
-        //    //    .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+        public async Task<ShopList> GetProductCategoryByIdAsync(int id)
+        {
+            var shopList = await _context
+                .ShopLists
+                .Include(x => x.ListProducts)
+                .FirstOrDefaultAsync(x => x.Id == id /*&& x.IsDeleted == false*/);
 
-        //    //return new ProductCategoryDto()
-        //    //{
-        //    //    Id = productCategory.Id,
-        //    //    Name = productCategory.Name,
-        //    //    Description = productCategory.Description,
-        //    //    CreatorUserName = productCategory.CreatorUserName,
-        //    //    IsDeleted = productCategory.IsDeleted,
-        //    //    Products = productCategory.Products
-        //    //};
-        //    return new ProductCategoryDto();
-        //}
+            //return new ProductCategoryDto()
+            //{
+            //    Id = productCategory.Id,
+            //    Name = productCategory.Name,
+            //    Description = productCategory.Description,
+            //    CreatorUserName = productCategory.CreatorUserName,
+            //    IsDeleted = productCategory.IsDeleted,
+            //    Products = productCategory.Products
+            //};
+            return shopList ?? new ShopList();
+        }
 
         public async Task CreateProduct(Product product, int productCategoryId)
         {
@@ -85,5 +77,11 @@ namespace ShoppingList.Services
 
         //    // await _context.SaveChangesAsync();
         //}
+        public async Task UpdateShopListAsync(ShopList shopList)
+        {
+            var shopListForUpdate = await _context.ShopLists.FirstOrDefaultAsync(x => x.Id == shopList.Id);
+            shopListForUpdate.Name = shopList.Name;
+            await _context.SaveChangesAsync();
+        }
     }
 }

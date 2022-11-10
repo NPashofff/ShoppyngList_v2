@@ -14,5 +14,7 @@ namespace ShoppingList.Models.Data.Models
         public string UserId { get; set; }
 
         public virtual ICollection<ListProduct> ListProducts { get; set; } = new HashSet<ListProduct>();
+
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category >();
     }
 }

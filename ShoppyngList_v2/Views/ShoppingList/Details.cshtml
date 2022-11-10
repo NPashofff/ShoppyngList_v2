@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Shopping List Name: @Html.DisplayFor(model => model.Name)</h1>
+<h3>Shopping List Name: @Html.DisplayFor(model => model.Name)</h3>
 
 <div>
     <dl class="row">
@@ -19,14 +19,14 @@
     <ul>
         @foreach (var x in Model.ListProducts)
         {
-            @*<li>
-                <a asp-controller="ShoppingList" asp-action="SaveList" class="@(x.IsBuy ? "btn btn-outline-success glyphicon glyphicon-ok" : "btn btn-outline-secondaryt")" asp-route-iss="@x.IsBuy" asp-route-productId="@x.Id" asp-route-productCategoryId="@Model.Id">@x.Name @(x.IsBuy ? " ✅  Bought" : "")</a>
-            </li>*@
+            <li>
+                <a asp-controller="ShoppingList" asp-action="SaveList" class="@(x.IsBought ? "btn btn-outline-success glyphicon glyphicon-ok" : "btn btn-outline-secondaryt")" asp-route-iss="@x.IsBought" asp-route-productId="@x.Id" asp-route-productCategoryId="@Model.Id">@x.Product.Name @(x.IsBought ? " ✅  Bought" : "")</a>
+            </li>
 
         }
     </ul>
 </div>
 <div>
-    <a asp-controller="ShoppingList" asp-action="CreateProduct" class="btn btn-light" asp-route-productCategoryId="@Model?.Id">Create Product</a> |
+    <a asp-action="AddCategory" class="btn btn-light" asp-route-shopListId="@Model?.Id">Add Category</a> |
     <a asp-action="Index" class="btn btn-light">Back to List</a>
 </div>
