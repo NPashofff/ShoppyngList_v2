@@ -110,7 +110,7 @@ namespace ShoppingList.Controllers
         }
         public async Task<ActionResult> AddCategoryToShpList(int id, int shopListId)
         {
-            await 
+            await _shoppingListService.AddCategoryToShopList(id, shopListId);
             return Redirect("/ShoppingList/Details?id=" + shopListId);
         }
     }

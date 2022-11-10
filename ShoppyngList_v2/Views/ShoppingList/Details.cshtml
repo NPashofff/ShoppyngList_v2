@@ -16,15 +16,20 @@
         </dd>
     </dl>
     <hr />
-    <ul>
-        @foreach (var x in Model.ListProducts)
-        {
-            <li>
-                <a asp-controller="ShoppingList" asp-action="SaveList" class="@(x.IsBought ? "btn btn-outline-success glyphicon glyphicon-ok" : "btn btn-outline-secondaryt")" asp-route-iss="@x.IsBought" asp-route-productId="@x.Id" asp-route-productCategoryId="@Model.Id">@x.Product.Name @(x.IsBought ? " ✅  Bought" : "")</a>
-            </li>
+    @foreach (var category in Model.Categories)
+    {
+        <h5>@category.Name</h5>
+        <a asp-action="AddCategory" class="btn btn-light" asp-route-shopListId="@Model?.Id">Add Product</a>
+        <ul>
+            @foreach (var x in Model.ListProducts)
+            {
+                <li>
+                    <a asp-controller="ShoppingList" asp-action="SaveList" class="@(x.IsBought ? "btn btn-outline-success glyphicon glyphicon-ok" : "btn btn-outline-secondaryt")" asp-route-iss="@x.IsBought" asp-route-productId="@x.Id" asp-route-productCategoryId="@Model.Id">@x.Product.Name @(x.IsBought ? " ✅  Bought" : "")</a>
+                </li>
 
-        }
-    </ul>
+            }
+        </ul>
+    }
 </div>
 <div>
     <a asp-action="AddCategory" class="btn btn-light" asp-route-shopListId="@Model?.Id">Add Category</a> |

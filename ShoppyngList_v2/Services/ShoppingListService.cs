@@ -15,7 +15,7 @@ namespace ShoppingList.Services
 
         public async Task Create(ShopList shpoList)
         {
-             _context.ShopLists.Add(shpoList);
+            _context.ShopLists.Add(shpoList);
             await _context.SaveChangesAsync();
         }
 
@@ -33,6 +33,7 @@ namespace ShoppingList.Services
             var shopList = await _context
                 .ShopLists
                 .Include(x => x.ListProducts)
+                .Include(x => x.Categories)
                 .FirstOrDefaultAsync(x => x.Id == id /*&& x.IsDeleted == false*/);
 
             //return new ProductCategoryDto()
@@ -81,6 +82,14 @@ namespace ShoppingList.Services
         {
             var shopListForUpdate = await _context.ShopLists.FirstOrDefaultAsync(x => x.Id == shopList.Id);
             shopListForUpdate.Name = shopList.Name;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddCategoryToShopList(int categoryId, int shopListId)
+        {
+            var shopList = await _context.ShopLists.FirstOrDefaultAsync(x => x.Id == shopListId);
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId);
+            shopList.Categories.Add(category);
             await _context.SaveChangesAsync();
         }
     }

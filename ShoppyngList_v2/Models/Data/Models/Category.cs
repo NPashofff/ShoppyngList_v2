@@ -14,5 +14,7 @@ namespace ShoppingList.Models.Data.Models
         
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
 
+        public virtual ICollection<ShopList> ShopLists { get; set; } = new HashSet<ShopList>();
+
     }
 }
